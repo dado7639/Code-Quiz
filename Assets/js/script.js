@@ -10,6 +10,8 @@ var button3 = document.getElementById("button3");
 var button4 = document.getElementById("button4");
 var scoreBox = document.getElementById("scoreBox");
 
+var userInitials = "";
+
 var userScore = 0;
 
 var questions = [
@@ -46,6 +48,27 @@ function countDown() {
   //   backtick same as quotation marks... dollar sign inject
   timer.innerHTML = `<h2>Timer: ${timerCount}</h2>`;
   timerCount--;
+
+  // at timer = 0 stop timer and prompt user to enter name and log score
+  if (timerCount === 0) {
+    userInitials = prompt(
+      "Game Over! Your score was " +
+        userScore +
+        " ! Please enter your initials to save score!"
+    );
+  } else if (qIndex === 5) {
+    userInitials = prompt(
+      " Game Over! Your score was " +
+        userScore +
+        " ! Please enter your initials to save score!"
+    );
+  }
+}
+
+// attempting to store userScore and userIntials... does not work
+function enterName() {
+  document.getElementById("recordScore").innerHTML = userScore;
+  document.getElementById("recordedName").innerHTML = userInitials;
 }
 
 // caputre users answer and check to see if it is correct answer
@@ -67,15 +90,11 @@ function checkAnswer(e) {
     // box for user score have it update everytime this happens
   } else {
     // decreases timer by one second if user selects wrong answer
-    timerCount--;
+    timerCount = timerCount - 5;
     qIndex++;
     scoreBox.innerHTML = `<h2>Score: ${userScore}</h2>`;
     // prompts new question if answered incorrectly
     questionCycle();
-  }
-
-  if (timerCount === 0) {
-    alert("TIME IS UP!");
   }
 }
 
@@ -84,9 +103,6 @@ function startQuiz() {
   //   clearInterval(countDown);
   setInterval(countDown, 1000);
   questionCycle();
-
-  // after answered or timer reachs 0 game vover
-  //save score and initials in local storage
 }
 
 function questionCycle() {
